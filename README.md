@@ -1,2 +1,10 @@
-# BlogApp
- Aplicação web desenvolvida com Node.js e MongoDB para gerenciar publicações de blog.
+# BlogApp 📝  
+
+O **BlogApp** é uma aplicação web desenvolvida com **Node.js** e **MongoDB** para criação e gerenciamento de posts de blog.  
+
+## 🛠 Tecnologias  
+- **Node.js**  
+- **Express.js**  
+- **MongoDB + Mongoose**  
+- **Handlebars (hbs)** para templates dinâmicos  
+
