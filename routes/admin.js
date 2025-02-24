@@ -13,7 +13,12 @@ router.get('/posts', (req, res) => {
     res.send('Posts');
 });
 router.get('/categorias', (req, res) => {
-    res.render('admin/categorias');
+    Categoria.find().sort({date: 'desc'}).lean().then((categorias) => {
+        res.render('admin/categorias', {categorias: categorias});
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao listar categorias: ' + err);
+        res.redirect('/admin');
+    });
 });
 router.get('/categorias/create', (req, res) => {
     res.render('admin/categorias/create');

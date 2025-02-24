@@ -1,3 +1,23 @@
 <h2>Lista de Categorias</h2>
 <hr>
 <a href="/admin/categorias/create"><button class="btn btn-success">Criar Categoria</button></a>
+
+<table class="table table-bordered mt-4">
+
+{{#each categorias}}
+    <tr>
+        <td>{{nome}}</td>
+        <td>{{slug}}</td>
+        <td>
+            <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-success">Editar</button></a>
+     
+      
+            <a href="/admin/categorias/delete/{{_id}}"><button class="btn btn-danger">Deletar</button></a>
+        </td>
+    </tr>
+{{else}}
+    <tr>
+        <td colspan="3">Nenhuma categoria encontrada</td>
+    </tr>
+{{/each}}
+</table>    
