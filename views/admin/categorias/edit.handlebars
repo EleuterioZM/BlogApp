@@ -1,0 +1,40 @@
+{{#if errors.length}}
+    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <ul class="mb-0">
+            {{#each errors}}
+                <li>{{text}}</li>
+            {{/each}}
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{{/if}}
+
+<h3 class="mb-3">Editar Categoria</h3>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form action="/admin/categorias/update" method="POST">
+            <input type="hidden" name="id" value="{{categoria._id}}">
+
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome da Categoria</label>
+                <input type="text" name="nome" class="form-control" placeholder="Nome da categoria" value="{{categoria.nome}}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="slug" class="form-label">Slug</label>
+                <input type="text" name="slug" class="form-control" placeholder="Slug da categoria" value="{{categoria.slug}}" required>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-pencil-square"></i> Editar Categoria
+                </button>
+                <a href="/admin/categorias" class="btn btn-warning">
+                    <i class="bi bi-arrow-left"></i> Voltar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -51,6 +51,47 @@ router.post('/categorias/save', (req, res) => {
             return res.send('Erro ao salvar categoria: ' + err); 
         });
 });
+router.get('/categorias/edit/:id', (req, res) => {
+    Categoria.findOne({_id: req.params.id}).lean().then((categoria) => {
+        return res.render('admin/categorias/edit', {categoria: categoria});
+       
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao editar categoria: ' + err);
+        res.redirect('/admin/categorias');
+    });
+});
+router.post('/categorias/update', async (req, res) => {
+    try {
+        const categoria = await Categoria.findOne({ _id: req.body.id });
+
+        if (!categoria) {
+            req.flash('error_msg', 'Categoria não encontrada.');
+            return res.redirect('/admin/categorias');
+        }
+
+        categoria.nome = req.body.nome;
+        categoria.slug = req.body.slug;
+
+        await categoria.save(); // Espera a atualização
+
+        req.flash('success_msg', 'Categoria atualizada com sucesso ✅');
+        return res.redirect('/admin/categorias');
+    } catch (err) {
+        req.flash('error_msg', 'Erro ao atualizar categoria: ' + err);
+        return res.redirect('/admin/categorias');
+    }
+});
+router.post('/categorias/delete/:id', (req, res) => {
+    Categoria.findByIdAndDelete(req.params.id)
+        .then(() => {
+            req.flash('success_msg', 'Categoria deletada com sucesso ✅');
+            return res.redirect('/admin/categorias');
+        })
+        .catch((err) => {
+            req.flash('error_msg', 'Erro ao deletar categoria: ' + err);
+            return res.redirect('/admin/categorias');
+        });
+});
 
 
 module.exports = router;
