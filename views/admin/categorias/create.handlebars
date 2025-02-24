@@ -1,0 +1,16 @@
+<h3>Nova Categoria</h3>
+<div class="card">
+    <div class="card-body">
+<form action="/admin/categorias/save" method="POST">
+    <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" name="nome" class="form-control" placeholder="Nome da categoria">
+
+        <label for="slug">Slug</label>
+        <input type="text" name="slug" class="form-control" placeholder="Slug da categoria">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-success">Criar Categoria</button>
+</form>
+    </div>
+</div>
