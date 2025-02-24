@@ -15,8 +15,15 @@ app.use(bodyParser.json());
 const hbs = create({ defaultLayout: 'main' });
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+
 //Mongoose
- //Em breve
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/blogapp').then(() => {
+    console.log('Conectado ao MongoDB');
+}).catch((err) => {
+    console.log('Erro ao conectar ao MongoDB: ' + err);
+});
  
  //public
 app.use(express.static(path.join(__dirname, 'public')));
