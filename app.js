@@ -7,6 +7,13 @@ const admin = require('./routes/admin');
 const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
+// model
+const mongoose = require('mongoose'); // IMPORTAR ANTES
+require('./models/Postagem'); // Agora mongoose já está disponível
+const Postagem = mongoose.model('postagens'); // Agora pode ser usado corretamente
+
+
+
 
 // Configurações
 // Configurando a sessão
@@ -50,7 +57,7 @@ app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 // Mongoose
-const mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/blogapp').then(() => {
     console.log('Conectado ao MongoDB');
@@ -63,6 +70,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Rotas
 app.use('/admin', admin);
+
+// Rota Principal
+app.get('/', (req, res) => {
+    Postagem.find().populate('categoria').sort({date: 'desc'}).then((postagens) => {
+        res.render('home/index', {postagens: postagens});
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao listar postagens: ' + err);
+        res.redirect('/404');
+    });
+});
+app.get('/404', (req, res) => {
+    res.send('Erro!');
+});
 
 // Servidor
 app.listen(8081, () => {

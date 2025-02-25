@@ -22,12 +22,9 @@
                     <a href="/admin/categorias/edit/{{_id}}" class="btn btn-outline-success btn-sm">
                         <i class="bi bi-pencil-square"></i>
                     </a>
-                    <form action="/admin/categorias/delete/{{_id}}" method="POST">
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="{{_id}}">
                         <i class="bi bi-trash"></i>
                     </button>
-                    </a>
-                    </form>
                 </td>
             </tr>
         {{else}}
@@ -37,3 +34,36 @@
         {{/each}}
     </tbody>
 </table>
+
+<!-- Modal de Confirmação (Centralizado) -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="fs-5">Tem certeza que deseja excluir esta categoria?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="deleteForm" method="POST">
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var confirmDeleteModal = document.getElementById("confirmDeleteModal");
+        confirmDeleteModal.addEventListener("show.bs.modal", function (event) {
+            var button = event.relatedTarget;
+            var categoriaId = button.getAttribute("data-id");
+            var form = document.getElementById("deleteForm");
+            form.action = "/admin/categorias/delete/" + categoriaId;
+        });
+    });
+</script>

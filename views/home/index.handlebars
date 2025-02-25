@@ -1,0 +1,26 @@
+
+<div class="jumbotron">
+    <h1 class="display-4">Bem-vindo ao meu blog!</h1>
+    <p class="lead">Este é um blog simples criado com Node.js e Express.</p>
+    <hr class="my-4">
+    <p>Este é um blog simples criado com Node.js e Express.</p>
+    <a class="btn btn-success btn-lg" href="#" role="button">Criar uma conta</a>
+</div>
+<hr class="my-4">
+<div class="container">
+    <h2>Postagemens recentes</h2>
+</div>
+{{#each postagens}}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{titulo}}</h5>
+            <p class="card-text">{{descricao}}</p>
+            <p>Categoria: {{categoria.nome}}</p>
+            <p>Data: {{formatDate data}}</p>
+                
+            <a href="/postagem/{{slug}}" class="btn btn-primary">Leia mais</a>
+        </div>
+    </div>
+    {{else}}
+    <h5>Nenhuma postagem encontrada</h5>
+{{/each}}

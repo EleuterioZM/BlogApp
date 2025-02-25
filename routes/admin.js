@@ -7,6 +7,7 @@ const Categoria = mongoose.model('categorias');
 const Postagem = mongoose.model('postagens');
 
 router.get('/', (req, res) => {
+    
     res.render('admin/index');
 });
 
@@ -96,8 +97,8 @@ router.post('/categorias/delete/:id', (req, res) => {
 
 router.get('/postagens', (req, res) => {
     Postagem.find().sort({ date: 'desc' })
-        .populate('categoria')  // Aqui você usa o populate para carregar os dados da categoria
-        .lean()
+        .populate('categoria')// Aqui você usa o populate para carregar os dados da categoria
+        .sort({ date: 'desc' })  
         .then((postagens) => {
             res.render('admin/postagens', { postagens: postagens });
         })
