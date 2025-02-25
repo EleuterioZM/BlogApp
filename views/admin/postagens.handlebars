@@ -1,0 +1,49 @@
+<h2>Lista de Postagens</h2>
+<hr>
+
+<a href="/admin/postagens/create" class="btn btn-success mb-3">
+    <i class="bi bi-plus-circle"></i> Criar Postagem
+</a>
+
+<table class="table table-bordered mt-4">
+    <thead class="table-light">
+        <tr>
+            <th>Nome</th>
+            <th>Slug</th>
+            <th>Descrição</th>
+            <th>Conteúdo</th>
+            <th>Categoria</th>
+            <th>Data</th>
+            <th>Ações</th>  
+        </tr>
+    </thead>
+    <tbody>
+        {{#each postagens}}
+            <tr>
+                <td>{{titulo}}</td> 
+                <td>{{slug}}</td>
+                <td>{{descricao}}</td>
+                <td>{{conteudo}}</td>
+                <td>{{categoria.nome}}</td>
+                   <td>{{formatDate data}}</td>
+                 <td class="d-flex gap-2">
+                    <a href="/admin/postagens/edit/{{_id}}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <form action="/admin/postagens/delete/{{_id}}" method="POST">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    </a>
+                    </form>
+                </td>
+            </tr>
+        {{else}}
+            <tr>
+                <td colspan="7" class="text-center">
+                    <h5>Nenhuma postagem encontrada</h5>
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>

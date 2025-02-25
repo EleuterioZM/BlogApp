@@ -9,15 +9,17 @@ const flash = require('connect-flash');
 const session = require('express-session');
 
 // Configurações
-//Configurando a sessão
+// Configurando a sessão
 app.use(session({
     secret: 'blogapp',
     resave: true,
     saveUninitialized: true
 }));
-//configurando o flash
+
+// Configurando o flash
 app.use(flash());
-//Middleware
+
+// Middleware para mensagens flash
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
@@ -28,12 +30,26 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Handlebars
-const hbs = create({ defaultLayout: 'main' });
+// Handlebars com helper 'eq'
+const hbs = create({
+    defaultLayout: 'main',
+    helpers: {
+        eq: (a, b) => a === b,
+        formatDate: (date) => {
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            return new Date(date).toLocaleDateString('pt-BR', options);
+        }
+    },
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,  // Permite acessar propriedades como _id
+        allowProtoMethodsByDefault: true      // Permite acessar métodos do protótipo
+    }
+});
+
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-//Mongoose
+// Mongoose
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/blogapp').then(() => {
@@ -41,12 +57,13 @@ mongoose.connect('mongodb://localhost/blogapp').then(() => {
 }).catch((err) => {
     console.log('Erro ao conectar ao MongoDB: ' + err);
 });
- 
- //public
+
+// Public
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rotas
 app.use('/admin', admin);
+
 // Servidor
 app.listen(8081, () => {
     console.log('Servidor rodando na porta 8081!');
