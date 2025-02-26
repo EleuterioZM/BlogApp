@@ -1,0 +1,24 @@
+<div class="card mt-4">
+    <div class="card-body">
+      <h1>{{postagem.titulo}}</h1>
+<hr>
+<small>Data de publicação: {{formatDate postagem.data}}</small>
+<hr>
+<p>{{postagem.conteudo}}</p>
+<hr>
+{{#if postagem.categoria}}
+    <small>Categoria: {{postagem.categoria.nome}}</small>
+{{else}}
+    <small>Categoria: Sem categoria</small>
+{{/if}}
+
+<hr>
+<button onclick="window.history.back()" class="btn btn-warning mb-3">
+    <i class="fas fa-arrow-left me-2"></i>Voltar
+</button>
+
+
+    </div>
+</div>
+
+

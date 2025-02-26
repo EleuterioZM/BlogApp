@@ -10,7 +10,9 @@ const session = require('express-session');
 // model
 const mongoose = require('mongoose'); // IMPORTAR ANTES
 require('./models/Postagem'); // Agora mongoose já está disponível
+require('./models/Categoria');
 const Postagem = mongoose.model('postagens'); // Agora pode ser usado corretamente
+const Categoria = mongoose.model('categorias');
 
 
 
@@ -80,11 +82,56 @@ app.get('/', (req, res) => {
         res.redirect('/404');
     });
 });
-app.get('/404', (req, res) => {
-    res.send('Erro!');
+
+// Página de erro 404
+app.get('/404', (req, res) => res.send('Erro!'));
+
+// Rota para exibir uma postagem específica
+app.get('/postagem/:slug', (req, res) => {
+    Postagem.findOne({ slug: req.params.slug }).populate('categoria').lean()
+        .then(postagem => {
+            if (!postagem) {
+                req.flash('error_msg', 'Postagem não encontrada.');
+                return res.redirect('/');
+            }
+            res.render('home/postagem', { postagem });
+        })
+        .catch(err => {
+            req.flash('error_msg', 'Erro ao carregar postagem: ' + err);
+            res.redirect('/');
+        });
 });
 
-// Servidor
-app.listen(8081, () => {
-    console.log('Servidor rodando na porta 8081!');
+// Listagem de categorias
+app.get('/categorias', (req, res) => {
+    Categoria.find().lean()
+        .then(categorias => res.render('home/categorias', { categorias }))
+        .catch(err => {
+            req.flash('error_msg', 'Erro ao listar categorias: ' + err);
+            res.redirect('/');
+        });
 });
+
+// Exibir postagens de uma categoria específica
+app.get('/categorias/:slug', (req, res) => {
+    Categoria.findOne({ slug: req.params.slug })
+        .then(categoria => {
+            if (!categoria) {
+                req.flash('error_msg', 'Categoria não encontrada.');
+                return res.redirect('/categorias');
+            }
+            Postagem.find({ categoria: categoria._id })
+                .then(postagens => res.render('home/categorias', { postagens, categoria }))
+                .catch(err => {
+                    req.flash('error_msg', 'Erro ao listar postagens: ' + err);
+                    res.redirect('/');
+                });
+        })
+        .catch(err => {
+            req.flash('error_msg', 'Erro ao carregar categoria: ' + err);
+            res.redirect('/');
+        });
+});
+
+// Iniciando o servidor
+app.listen(8081, () => console.log('Servidor rodando na porta 8081!'));

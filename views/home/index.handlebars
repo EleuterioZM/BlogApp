@@ -4,21 +4,25 @@
     <p class="lead">Este é um blog simples criado com Node.js e Express.</p>
     <hr class="my-4">
     <p>Este é um blog simples criado com Node.js e Express.</p>
-    <a class="btn btn-success btn-lg" href="#" role="button">Criar uma conta</a>
+    <a class="btn btn-primary btn-lg" href="#" role="button">Criar uma conta</a>
 </div>
 <hr class="my-4">
 <div class="container">
     <h2>Postagemens recentes</h2>
 </div>
 {{#each postagens}}
-    <div class="card">
+    <div class="card mt-4">
         <div class="card-body">
+          
+            
             <h5 class="card-title">{{titulo}}</h5>
             <p class="card-text">{{descricao}}</p>
-            <p>Categoria: {{categoria.nome}}</p>
-            <p>Data: {{formatDate data}}</p>
-                
-            <a href="/postagem/{{slug}}" class="btn btn-primary">Leia mais</a>
+              <a href="/postagem/{{slug}}" class="btn btn-success mt-2">Leia mais</a>
+            <hr>
+              <small>Categoria: {{categoria.nome}}</small>
+            <small>Data de publicação: {{formatDate data}}</small>
+            <br> 
+          
         </div>
     </div>
     {{else}}

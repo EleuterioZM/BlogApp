@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-md-3">
+        <h4 class="mt-3">Categorias :</h4>
+        <hr>
+        <div class="categorias-container mb-4">
+            {{#if categorias}}
+                <ul class="list-unstyled">
+                    {{#each categorias}}
+                        <li class="mb-2">
+                            <a href="/categorias/{{slug}}" class="text-decoration-none {{#if ../categoria}}{{#eq ../categoria.slug slug}}fw-bold{{/eq}}{{/if}}">
+                                <h5 class="text-primary">{{nome}}</h5>
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        {{#if categoria}}
+            <h4 class="mt-3">Postagens na Categoria "{{categoria.nome}}"</h4>
+            <hr>
+
+            <div class="postagens-container">
+                {{#if postagens.length}}
+                    {{#each postagens}}
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{titulo}}</h5>
+                                <p class="card-text">{{descricao}}</p>
+                                <a href="/postagem/{{slug}}" class="btn btn-success">Leia mais</a>
+                                <a href="/categorias/{{categoria.slug}}" class="btn btn-warning">Voltar</a>
+                                <hr class="my-3">
+                                <small class="text-muted">Data de publicação: {{formatDate data}}</small>
+                            </div>
+                        </div>
+                    {{/each}}
+                {{else}}
+                    <div class="alert alert-warning text-center" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <span>Nenhuma postagem encontrada nesta categoria.</span>
+                    </div>
+                {{/if}}
+            </div>
+        {{else}}
+            <div class="alert alert-info text-center mt-3" role="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                <span>Selecione uma categoria para ver suas postagens.</span>
+            </div>
+        {{/if}}
+    </div>
+</div>
