@@ -7,12 +7,15 @@ const admin = require('./routes/admin');
 const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
+const usuario = require('./routes/usuario');
 // model
-const mongoose = require('mongoose'); // IMPORTAR ANTES
+const mongoose = require('mongoose'); 
 require('./models/Postagem'); // Agora mongoose já está disponível
 require('./models/Categoria');
+require('./models/Usuario');
 const Postagem = mongoose.model('postagens'); // Agora pode ser usado corretamente
 const Categoria = mongoose.model('categorias');
+const Usuario = mongoose.model('usuarios');
 
 
 
@@ -72,7 +75,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Rotas
 app.use('/admin', admin);
-
+app.use('/usuarios', usuario);
 // Rota Principal
 app.get('/', (req, res) => {
     Postagem.find().populate('categoria').sort({date: 'desc'}).then((postagens) => {
@@ -132,6 +135,11 @@ app.get('/categorias/:slug', (req, res) => {
             res.redirect('/');
         });
 });
+
+app.get('/usuarios/registro', (req, res) => {
+    res.render('usuarios/registro');
+});
+
 
 // Iniciando o servidor
 app.listen(8081, () => console.log('Servidor rodando na porta 8081!'));

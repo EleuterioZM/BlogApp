@@ -1,0 +1,23 @@
+{{#if errors}}
+    <div class="alert alert-danger">
+        {{#each errors}}
+            <p>{{texto}}</p>
+        {{/each}}
+    </div>
+{{/if}}
+<h3>Registro de usuario</h3>
+<div class="card mt-4">
+    <div class="card-body">
+        <form action="/usuarios/registro" method="POST">
+            <label for="nome">Nome</label>
+            <input type="text" name="nome" class="form-control" required>
+            <label for="email">Email</label>
+            <input type="email" name="email" class="form-control" required>
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" class="form-control" required>
+            <label for="senha2">Repetir senha</label>
+            <input type="password" name="senha2" class="form-control" required>
+            <button type="submit" class="btn btn-success mt-4">Criar conta</button>
+        </form>
+    </div>
+</div>

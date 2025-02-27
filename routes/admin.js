@@ -5,6 +5,7 @@ require("../models/Categoria");
 require("../models/Postagem");
 const Categoria = mongoose.model('categorias');
 const Postagem = mongoose.model('postagens');
+const validator = require('validator');
 
 router.get('/', (req, res) => {
     
