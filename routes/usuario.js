@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcrypt');
+const eAdmin = require('../helpers/eAdmin');
 const saltRounds = 10;
 
 // Rota de registro (GET)
@@ -50,7 +51,7 @@ router.post('/registro', async (req, res) => {
 
             // Cria o usuário com a senha criptografada
             const usuario = new Usuario({ nome, email, senha: hash });
-
+         //   usuario.eAdmin = 1;
             await usuario.save();
             req.flash('success_msg', 'Usuário criado com sucesso');
             res.redirect('/usuarios/login');
@@ -102,5 +103,12 @@ router.post('/login', async (req, res) => {
         res.redirect('/usuarios/login');
     }
 });
+
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success_msg', 'Deslogado com sucesso');
+    res.redirect('/');
+});
+
 
 module.exports = router;

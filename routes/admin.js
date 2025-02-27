@@ -6,8 +6,9 @@ require("../models/Postagem");
 const Categoria = mongoose.model('categorias');
 const Postagem = mongoose.model('postagens');
 const validator = require('validator');
+const { eAdmin } = require('../helpers/eAdmin');
 
-router.get('/', (req, res) => {
+router.get('/', eAdmin, (req, res) => {
     
     res.render('admin/index');
 });
@@ -15,7 +16,7 @@ router.get('/', (req, res) => {
 router.get('/posts', (req, res) => {
     res.send('Posts');
 });
-router.get('/categorias', (req, res) => {
+router.get('/categorias',eAdmin, (req, res) => {
     Categoria.find().sort({date: 'desc'}).lean().then((categorias) => {
         res.render('admin/categorias', {categorias: categorias});
     }).catch((err) => {
@@ -23,10 +24,10 @@ router.get('/categorias', (req, res) => {
         res.redirect('/admin');
     });
 });
-router.get('/categorias/create', (req, res) => {
+router.get('/categorias/create', eAdmin, (req, res) => {
     res.render('admin/categorias/create');
 });
-router.post('/categorias/save', (req, res) => {
+router.post('/categorias/save', eAdmin, (req, res) => {
     var errors = [];
 
     if (!req.body.nome) {
@@ -54,7 +55,7 @@ router.post('/categorias/save', (req, res) => {
             return res.send('Erro ao salvar categoria: ' + err); 
         });
 });
-router.get('/categorias/edit/:id', (req, res) => {
+router.get('/categorias/edit/:id', eAdmin, (req, res) => {
     Categoria.findOne({_id: req.params.id}).lean().then((categoria) => {
         return res.render('admin/categorias/edit', {categoria: categoria});
        
@@ -63,7 +64,7 @@ router.get('/categorias/edit/:id', (req, res) => {
         res.redirect('/admin/categorias');
     });
 });
-router.post('/categorias/update', async (req, res) => {
+router.post('/categorias/update', eAdmin,   async (req, res) => {
     try {
         const categoria = await Categoria.findOne({ _id: req.body.id });
 
@@ -84,7 +85,7 @@ router.post('/categorias/update', async (req, res) => {
         return res.redirect('/admin/categorias');
     }
 });
-router.post('/categorias/delete/:id', (req, res) => {
+router.post('/categorias/delete/:id', eAdmin, (req, res) => {
     Categoria.findByIdAndDelete(req.params.id)
         .then(() => {
             req.flash('success_msg', 'Categoria deletada com sucesso ✅');
@@ -96,7 +97,7 @@ router.post('/categorias/delete/:id', (req, res) => {
         });
 });
 
-router.get('/postagens', (req, res) => {
+router.get('/postagens', eAdmin, (req, res) => {
     Postagem.find().sort({ date: 'desc' })
         .populate('categoria')// Aqui você usa o populate para carregar os dados da categoria
         .sort({ date: 'desc' })  
@@ -110,13 +111,13 @@ router.get('/postagens', (req, res) => {
 });
 
 
-router.get('/postagens/create', (req, res) => {
+router.get('/postagens/create', eAdmin, (req, res) => {
     Categoria.find().lean().then((categorias) => {
         res.render('admin/postagens/create', {categorias: categorias});
     });
 });
 
-router.post('/postagens/save', (req, res) => {
+router.post('/postagens/save', eAdmin, (req, res) => {
     var errors = [];
 
     if (!req.body.titulo) {
@@ -151,7 +152,7 @@ router.post('/postagens/save', (req, res) => {
         });
 }); 
 
-router.get('/postagens/edit/:id', (req, res) => {
+router.get('/postagens/edit/:id', eAdmin, (req, res) => {
     Postagem.findOne({_id: req.params.id}).lean().then((postagem) => {
         Categoria.find().sort({date: 'desc'}).lean().then((categorias) => {
             res.render('admin/postagens/edit', {postagem: postagem, categorias: categorias});
@@ -159,7 +160,7 @@ router.get('/postagens/edit/:id', (req, res) => {
     });
 });
 
-router.post('/postagens/update', async (req, res) => {    
+router.post('/postagens/update', eAdmin, async (req, res) => {    
     try {
         const postagem = await Postagem.findOne({ _id: req.body.id });
 
@@ -185,7 +186,7 @@ router.post('/postagens/update', async (req, res) => {
 });
 
 
-router.post('/postagens/delete/:id', (req, res) => {
+router.post('/postagens/delete/:id', eAdmin, (req, res) => {
     Postagem.findByIdAndDelete(req.params.id)
         .then(() => {
             req.flash('success_msg', 'Postagem deletada com sucesso ✅');
