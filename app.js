@@ -10,6 +10,7 @@ const session = require('express-session');
 const usuario = require('./routes/usuario');
 const passport = require('passport');
 require("./config/auth")(passport)
+const db = require('./config/db');
 
  
 // model
@@ -75,7 +76,7 @@ app.set('view engine', 'handlebars');
 // Mongoose
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/blogapp').then(() => {
+mongoose.connect(db.mongoURI).then(() => {
     console.log('Conectado ao MongoDB');
 }).catch((err) => {
     console.log('Erro ao conectar ao MongoDB: ' + err);
@@ -153,4 +154,4 @@ app.get('/usuarios/registro', (req, res) => {
 
 
 // Iniciando o servidor
-app.listen(8081, () => console.log('Servidor rodando na porta 8081!'));
+app.listen(process.env.PORT || 8081, () => console.log('Servidor rodando na porta 8081!'));
