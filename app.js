@@ -8,11 +8,16 @@ const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
 const usuario = require('./routes/usuario');
+const passport = require('passport');
+require("./config/auth")(passport)
+
+ 
 // model
 const mongoose = require('mongoose'); 
 require('./models/Postagem'); // Agora mongoose já está disponível
 require('./models/Categoria');
 require('./models/Usuario');
+
 const Postagem = mongoose.model('postagens'); // Agora pode ser usado corretamente
 const Categoria = mongoose.model('categorias');
 const Usuario = mongoose.model('usuarios');
@@ -27,6 +32,8 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Configurando o flash
 app.use(flash());
